@@ -1,0 +1,31 @@
+{
+  "script":{
+    "released":"2017-08-14",
+    "license":"Licensed under the Apache License, Version 2.0",
+    "copyright":"Copyright 2020 Google LLC",
+    "icon":"arrow_forward",
+    "title":"BigQuery Query To Table",
+    "description":"Save query results into a BigQuery table.",
+    "to":["bigquery"],
+    "from":["bigquery"],
+    "instructions":[
+      "Specify a single query and choose legacy or standard mode.",
+      "For PLX use user authentication and: SELECT * FROM [plx.google:FULL_TABLE_NAME.all] WHERE...",
+      "Every time the query runs it will overwrite the table."
+    ],
+    "authors":["kenjora@google.com"]
+  },
+  "tasks":[
+    { "bigquery":{
+      "auth":{"field":{ "name":"auth_write", "kind":"authentication", "order":1, "default":"service", "description":"Credentials used for writing data." }},
+      "from":{
+        "query":{"field":{ "name":"query", "kind":"text", "order":1, "default":"", "description":"SQL with newlines and all." }},
+        "legacy":{"field":{ "name":"legacy", "kind":"boolean", "order":4, "default":true, "description":"Query type must match source tables." }}
+      },
+      "to":{
+        "dataset":{"field":{ "name":"dataset", "kind":"string", "order":2, "default":"", "description":"Existing BigQuery dataset." }},
+        "table":{"field":{ "name":"table", "kind":"string", "order":3, "default":"", "description":"Table to create from this query." }}
+      }
+    }}
+  ]
+}

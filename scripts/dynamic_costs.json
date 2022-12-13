@@ -1,0 +1,49 @@
+{
+  "script": {
+    "released":"2018-07-13",
+    "license":"Licensed under the Apache License, Version 2.0",
+    "copyright":"Copyright 2020 Google LLC",
+    "icon":"monetization_on",
+    "title":"Dynamic Costs Reporting",
+    "description":"Calculate DV360 cost at the dynamic creative combination level.",
+    "from":["cm360", "sheets"],
+    "to":["bigquery"],
+    "test":"https://github.com/google/starthinker/blob/master/tests/dynamic_costs.json",
+    "status":"NEEDS FIX - test not passing.",
+    "instructions":[
+      "Add a sheet URL. This is where you will enter advertiser and campaign level details.",
+      "Specify the CM network ID.",
+      "Click run now once, and a tab called **Dynamic Costs** will be added to the sheet with instructions.",
+      "Follow the instructions on the sheet; this will be your configuration.",
+      "StarThinker will create two or three (depending on the case) reports in CM named **Dynamic Costs - ...**.",
+      "Wait for **BigQuery->{field:recipe_project}->{field:dataset}->Dynamic_Costs_Analysis** to be created or click Run Now.",
+      "Copy [Dynamic Costs Sample Data](https://datastudio.google.com/open/1vBvBEiMbqCbBuJTsBGpeg8vCLtg6ztqA).",
+      "Click Edit Connection, and Change to **BigQuery->{field:recipe_project}->{field:dataset}->Dynamic_Costs_Analysis**.",
+      "Copy [Dynamic Costs Sample Report](https://datastudio.google.com/open/1xulBAdx95SnvjnUzFP6r14lhkvvVbsP8).",
+      "When prompted, choose the new data source you just created.",
+      "Edit the table to include or exclude columns as desired.",
+      "Or, give the dashboard connection intructions to the client."
+    ],
+    "authors":["aritrab@google.com", "kenjora@google.com"]
+  },
+  "tasks":[
+    { "dynamic_costs":{
+      "auth":{"field":{ "name":"auth_read", "kind":"authentication", "order":1, "default":"user", "description":"Credentials used for reading data." }},
+      "account":{"field": {"name": "dcm_account", "kind": "string", "order": 0, "default": ""}},
+      "sheet":{
+        "template":{
+          "url":"https://docs.google.com/spreadsheets/d/19J-Hjln2wd1E0aeG3JDgKQN9TVGRLWxIEUQSmmQetJc/edit?usp=sharing",
+          "tab":"Dynamic Costs",
+          "range":"A1"
+        },
+        "url":{"field": {"name": "configuration_sheet_url", "kind": "string", "order": 1, "default": ""}},
+        "tab":"Dynamic Costs",
+        "range":"A2:B"
+      },
+      "out":{
+        "auth":{"field":{ "name":"auth_write", "kind":"authentication", "order":1, "default":"service", "description":"Credentials used for writing data." }},
+        "dataset":{"field": {"name": "bigquery_dataset", "kind": "string", "order": 2, "default": "dynamic_costs"}}
+      }
+    }}
+  ]
+}

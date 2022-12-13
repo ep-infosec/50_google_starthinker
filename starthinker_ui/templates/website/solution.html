@@ -1,0 +1,232 @@
+{% extends "page.html" %}
+
+{% block disclaimer %}
+    <!--
+      ###########################################################################
+      #
+      #  Copyright 2020 Google LLC
+      #
+      #  Licensed under the Apache License, Version 2.0 (the "License");
+      #  you may not use this file except in compliance with the License.
+      #  You may obtain a copy of the License at
+      #
+      #      https://www.apache.org/licenses/LICENSE-2.0
+      #
+      #  Unless required by applicable law or agreed to in writing, software
+      #  distributed under the License is distributed on an "AS IS" BASIS,
+      #  WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, either express or implied.
+      #  See the License for the specific language governing permissions and
+      #  limitations under the License.
+      #
+      ###########################################################################
+      #
+      # This code generated (see starthinker/scripts for possible source):
+      #   - Command: "python starthinker_ui/manage.py github"
+      #
+      ###########################################################################
+    -->
+{% endblock %}
+
+{% load i18n %}
+{% load website_app %}
+
+{% block css %}
+  #solution_image { margin: 10px auto; width: 100%; max-width: 800px; height: auto; display: block; }
+  .btn-large { margin: 1vh 1vw; }
+  .col { margin-right: auto; }
+  pre { overflow: scroll; }
+{% endblock %}
+
+{% block content %}
+
+  <br/><br/>
+  <a class="trigger_category menu_link waves-effect waves-dark btn-flat grey lighten-2" href="{% if external %}/starthinker{% endif %}/solution/">{% trans 'All' %}</a>
+  {% for c in script.get_categories %}
+    <a class="trigger_category menu_link waves-effect waves-dark btn-flat grey lighten-4" href="{% if external %}/starthinker{% endif %}/solution/?category={{ c|slugify }}">{{ c }}</a>
+  {% endfor %}
+  {% for c in script.get_requirements %}
+    <a class="trigger_category menu_link waves-effect waves-dark btn-flat grey lighten-3" href="{% if external %}/starthinker{% endif %}/solution/?category={{ c|slugify }}">{{ c }}</a>
+  {% endfor %}
+
+  <br/><br/>
+
+  {% if script.get_image %}
+    <div class="row">
+      <div class="col s12 m6 l4">
+        <i class="large material-icons">{{ script.get_icon }}</i><h1>{{ script.get_name }}</h1>
+        <p class="flow-text">{{ script.get_description|markdown|safe }}</p>
+      </div>
+      <div class="col s12 m6 l8">
+        {% if script.get_image %}<img id="solution_image" src="{{ script.get_image }}" alt="{{ script.get_name|escape }} {% trans 'Sample Screenshot' %}"/>{% endif %}
+      </div>
+    </div>
+  {% else %}
+    <h1><i class="large material-icons">{{ script.get_icon }}</i>&nbsp;{{ script.get_name }}</h1>
+    <p class="flow-text">{{ script.get_description|markdown|safe }}</p>
+  {% endif %}
+
+  <br/><br/>
+  <div class="buttons">
+
+    <a class="btn-large blue waves-effect waves-light" href="https://groups.google.com/d/forum/starthinker-assets" target="_blank">
+      <i class="material-icons right">lock_open</i>Get Access
+    </a>
+
+    {% if script.get_sample %}
+      <a class="btn-large blue waves-effect waves-light" href="{{ script.get_sample }}" target="_blank">
+        <i class="material-icons right">directions_bike</i>Sample
+      </a>
+    {% endif %}
+
+    {% if script.get_documentation %}
+      <a class="btn-large blue waves-effect waves-light" href="{{ script.get_documentation }}" target="_blank">
+        <i class="material-icons right">list</i>Documentation
+      </a>
+    {% endif %}
+
+    {% if script.get_open_source %}
+      <a class="btn-large blue waves-effect waves-light" href="{{ script.get_open_source }}" target="_blank">
+        <i class="material-icons right">list</i>Git Hub
+      </a>
+      <a class="btn-large blue waves-effect waves-light" href="{{ script.get_link_python }}" target="_blank">
+        <i class="material-icons right">source</i>Python
+      </a>
+      <a class="btn-large blue waves-effect waves-light" href="{{ script.get_link_colab }}" target="_blank">
+        <i class="material-icons right">menu_book</i>Colab
+      </a>
+      <a class="btn-large blue waves-effect waves-light" href="{{ script.get_link_airflow }}" target="_blank">
+        <i class="material-icons right">air</i>Airflow
+      </a>
+    {% endif %}
+
+    {% if script.get_test %}
+      <a class="btn-large blue waves-effect waves-light" href="{{ script.get_test }}" target="_blank">
+        <i class="material-icons right">thumb_up</i>Test
+      </a>
+    {% endif %}
+
+    {% if not external %}
+      <a class="btn-large blue waves-effect waves-light" href="{{ script.get_link_ui }}" target="_blank">
+        <i class="material-icons right">play_circle_outline</i>Run Now
+      </a>
+    {% endif %}
+
+  </div>
+
+  <br/><br/>
+  <div class="row">
+    <div class="col s12 m6 l4">
+      <div class="card">
+        <br/>
+        {% if script.get_impacts %}
+          <h4>Impact Level</h4>
+          <table class="bordered">
+            <tbody>
+              {% for impact, value in script.get_impacts.items %}
+              <tr>
+                <td width="50%">{{ impact|title }}</td>
+                <td>
+                  <div class="progress">
+                    <div class="determinate" style="width: {{ value }}%"></div>
+                  </div>
+                </td>
+              </tr>
+              {% endfor %}
+            </tbody>
+          </table>
+        {% endif %}
+
+        {% if script.get_pitches %}
+          <h4>Value Proposition</h4>
+          <table class="bordered">
+            <tbody>
+              {% for pitch in script.get_pitches %}
+              <tr>
+                <td>{{ pitch }}</td>
+              </tr>
+              {% endfor %}
+            </tbody>
+          </table>
+        {% endif %}
+
+        {% if script.get_instructions %}
+          <h4>Instructions</h4>
+          <table class="bordered">
+            <tbody>
+              {% for instruction in script.get_instructions %}
+              <tr>
+                <td>{{ instruction|markdown|safe }}</td>
+              </tr>
+              {% endfor %}
+            </tbody>
+          </table>
+        {% endif %}
+
+
+        <h4>Details</h4>
+        <table class="bordered">
+          <tbody>
+
+            <tr>
+              <td>Open Source</td>
+              <td>{% if script.get_open_source %}YES{% else %}NO{% endif %}
+            </tr>
+
+            <tr>
+              <td>Age</td>
+              <td>{{ script.get_released }} ({{ script.get_released|timesince }})</td>
+            </tr>
+
+            <tr>
+              <td>Authors</td>
+              <td><a href="{% request_solution script %}" target="_blank">{{ script.get_authors|join:"<br/>" }}</a>
+              </td>
+            </tr>
+
+            {% with script.get_setup as setup %}
+              {% if script.is_manual %}
+                <tr>
+                  <td>Manual</td>
+                  <td>Triggered on demand by user.</td>
+                </tr>
+              {% else %}
+                <tr>
+                  <td>Shedule Days</td>
+                  <td>{% if setup.days %}{{ setup.day|join:", " }}{% else %}Configured by user.{% endif %}</td>
+                </tr>
+                <tr>
+                  <td>Shedule Hours</td>
+                  <td>{% if setup.hour %}{{ setup.hour|join:", " }}{% else %}Configured by user.{% endif %}</td>
+                </tr>
+              {% endif %}
+            {% endwith %}
+
+          </tbody>
+        </table>
+
+      </div>
+    </div>
+
+    <div class="col s12 m6 l8">
+      <pre id="code-workflow" class="card left-align"><code class="language-json">{{ script.get_tasks_linked|safe }}</code></pre>
+    </div>
+
+  </div>
+
+  <br/><br/>
+  <h3 id="code-tasks">Run This Workflow In Minutes On Google Cloud</h3>
+  <p class="flow-text">Everything from a quick Google Cloud UI to reference developer code for your team in one GitHub repository.</p>
+  <p>
+    <a href="https://github.com/google/starthinker/blob/master/tutorials/README.md#deployment" class="waves-effect waves-light btn blue form_button modal-trigger" target="_blank">
+      Deployment Steps<i class="material-icons right">launch</i>
+    </a>
+    <a href="https://github.com/google/starthinker/blob/master/tutorials/README.md#development" class="waves-effect waves-light btn blue form_button modal-trigger" target="_blank">
+      Developer Guide<i class="material-icons right">build</i>
+    </a>
+    <a href="{% if external %}https://google.github.io/starthinker/help/{% else %}/help/{% endif %}" class="waves-effect waves-light btn blue form_button modal-trigger" target="_blank">
+      UI How To<i class="material-icons right">laptop</i>
+    </a>
+  </p>
+
+
+{% endblock %}

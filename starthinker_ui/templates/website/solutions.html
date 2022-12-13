@@ -1,0 +1,175 @@
+{% extends "page.html" %}
+
+{% block disclaimer %}
+    <!--
+      ###########################################################################
+      #
+      #  Copyright 2020 Google LLC
+      #
+      #  Licensed under the Apache License, Version 2.0 (the "License");
+      #  you may not use this file except in compliance with the License.
+      #  You may obtain a copy of the License at
+      #
+      #      https://www.apache.org/licenses/LICENSE-2.0
+      #
+      #  Unless required by applicable law or agreed to in writing, software
+      #  distributed under the License is distributed on an "AS IS" BASIS,
+      #  WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, either express or implied.
+      #  See the License for the specific language governing permissions and
+      #  limitations under the License.
+      #
+      ###########################################################################
+      #
+      # This code generated (see starthinker/scripts for possible source):
+      #   - Command: "python starthinker_ui/manage.py github"
+      #
+      ###########################################################################
+    -->
+{% endblock %}
+
+{% load i18n %}
+{% load website_app %}
+
+{% block css %}
+  i.expand { position: absolute; right: 15px; top: 15px; }
+  i.expand:hover { cursor: pointer; }
+  .col { margin-right: auto; }
+  .card { min-height: 30vh; }
+{% endblock %}
+
+{% block js %}
+  <script type="text/javascript">
+
+    function getQueryVariable(variable) {
+      var query = window.location.search.substring(1);
+      var vars = query.split('&');
+      for (var i = 0; i < vars.length; i++) {
+        var pair = vars[i].split('=');
+        if (decodeURIComponent(pair[0]) == variable) {
+            return decodeURIComponent(pair[1]);
+        }
+      }
+      return null;
+    }
+
+    $(document).ready(function() {
+
+      $('a.trigger_category').on('click tap', function() {
+        var category = this.id.replace('trigger_', '');
+        $("#scripts div.col").hide();
+        $("#scripts div.col." + category).show();
+        $("#category_link").attr('href', '?category=' + category.replace('category_', ''));
+      });
+
+      var category = getQueryVariable('category');
+      if ( category ) {
+        $("#scripts div.col").hide();
+        $("#scripts div.col.category_" + category).show();
+        $("#category_link").attr('href', '?category=' + category.replace('category_', ''));
+      }
+
+    });
+  </script>
+{% endblock %}
+
+{% block content %}
+
+  {% search_scripts ALL %}
+
+  <h1>
+    Packaged Solutions
+    <a id="category_link" href="?catgegory=all"><i class="material-icons blue-text">link</i></a>
+  </h1>
+  <p class="flow-text">{% trans "These recipes are entire workflows that deploy end to end solutions for clients." %}</p>
+
+  <a href="#!" class="trigger_category menu_link waves-effect waves-dark btn-flat grey lighten-1" id="trigger_category_all">{% trans "All" %}</a>
+  {% if '7 days' in agos %}
+     <a href="#!" class="trigger_category menu_link waves-effect waves-dark btn-flat grey lighten-1" id="trigger_category_7-days">7 {% trans "days" %}</a>
+  {% endif %}
+  {% if '30 days' in agos %}
+     <a href="#!" class="trigger_category menu_link waves-effect waves-dark btn-flat grey lighten-1" id="trigger_category_30-days">30 {% trans "days" %}</a>
+  {% endif %}
+  {% if '90 days' in agos %}
+     <a href="#!" class="trigger_category menu_link waves-effect waves-dark btn-flat grey lighten-1" id="trigger_category_90-days">90 {% trans "days" %}</a>
+  {% endif %}
+  {% if 'older' in agos %}
+     <a href="#!" class="trigger_category menu_link waves-effect waves-dark btn-flat grey lighten-1" id="trigger_category_older">{% trans "older" %}</a>
+  {% endif %}
+
+  <br/><br/>
+
+  <div class="row">
+    <div class="col s6 m4 l3 right-align">
+      <ul class="collapsible">
+        <li>
+          <div class="collapsible-header"><i class="material-icons">mediation</i><a href="#!" class="trigger_category collection-item" id="trigger_category_all">{% trans "All" %}</a></div>
+        </li>
+        {% for from, tos in categories %}
+          <li>
+            <div class="collapsible-header"><i class="material-icons">mediation</i>{{ from|title }}</div>
+            <div class="collapsible-body"><span>
+              <ul class="collection">
+                {% for to in tos %}<li class="collection-item"><div><a href="#!" class="trigger_category collection-item" id="trigger_category_{{ from|slugify }}_{{ to|slugify }}"><i class="material-icons">arrow_forward</i>{{ to }}</a></div></li>
+                {% endfor %}
+              </ul>
+            </span></div>
+          </li>
+        {% endfor %}
+      </ul>
+    </div>
+    <div class="col s6 m8 l9 right-align">
+      <div id="scripts" class="row center-align">
+
+        {% for script in scripts %}
+          <div class="col s6 m4 l3 category_all{% for c in script.get_released_ago %} category_{{ c|slugify }}{% endfor %}{% for from in script.get_from %}{% for to in script.get_to %} category_{{ from|slugify }}_{{ to|slugify }}{% endfor %}{% endfor %}">
+            <div class="card ">
+              <div class="card-content">
+                <span class="card-title text-darken-4">
+                  {% if script.get_pitches %}
+                  <i class="activator material-icons expand">more_vert</i>
+                  {% endif %}
+                  <a href="{% if external %}/starthinker{% endif %}/solution/{{ script.get_tag }}/">
+                    <i class="material-icons medium">{{ script.get_icon }}</i><br/><br/>
+                    {{ script.get_name }}
+                  </a>
+                </span>
+                <p>{{ script.get_description|markdown|safe }}</p>
+              </div>
+              <div class="card-reveal">
+                <i class="card-title material-icons right">close</i>
+                <div class="solution">
+                  <table class="bordered">
+                     <tbody>
+                     {% for pitch in script.get_pitches %}
+                       <tr>
+                         <td>{{ pitch }}</td>
+                       </tr>
+                     {% endfor %}
+                    </tbody>
+                  </table>
+                </div>
+              </div>
+            </div>
+          </div>
+        {% endfor %}
+      </div>
+    </div>
+  </div>
+
+  <br/><br/>
+
+  <h3 id="code-tasks">{% trans "Run These Workflows In Minutes On Google Cloud" %}</h3>
+  <p class="flow-text">{% trans "Everything from a quick Google Cloud UI to reference developer code for your team in one GitHub repository." %}</p>
+  <p>
+    <a href="https://github.com/google/starthinker/blob/master/tutorials/README.md#deployment" class="waves-effect waves-light btn blue form_button modal-trigger" target="_blank">
+      {% trans "Deployment Steps" %}<i class="material-icons right">launch</i>
+    </a>
+    <a href="https://github.com/google/starthinker/blob/master/tutorials/README.md#development" class="waves-effect waves-light btn blue form_button modal-trigger" target="_blank">
+      {% trans "Developer Guide" %}<i class="material-icons right">build</i>
+    </a>
+    <a href="{% if external %}https://google.github.io/starthinker/help/{% else %}/help/{% endif %}" class="waves-effect waves-light btn blue form_button modal-trigger" target="_blank">
+      {% trans "UI How To" %}<i class="material-icons right">laptop</i>
+    </a>
+  </p>
+
+{% endblock %}

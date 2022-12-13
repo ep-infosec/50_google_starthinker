@@ -1,0 +1,39 @@
+{
+  "script":{
+    "released":"2017-08-14",
+    "license":"Licensed under the Apache License, Version 2.0",
+    "copyright":"Copyright 2020 Google LLC",
+    "icon":"donut_small",
+    "from":["cm360"],
+    "to":["bigquery"],
+    "title":"CM360 Report To BigQuery",
+    "description":"Move existing CM report into a BigQuery table.",
+    "test":"https://github.com/google/starthinker/blob/master/tests/dcm_to_bigquery.json",
+    "instructions":[
+      "Specify an account id.",
+      "Specify either report name or report id to move a report.",
+      "The most recent valid file will overwrite the table.",
+      "Schema is pulled from the official CM specification."
+    ],
+    "authors":["kenjora@google.com"]
+  },
+  "tasks":[
+    { "dcm":{
+      "auth":{"field":{ "name":"auth_read", "kind":"authentication", "order":0, "default":"user", "description":"Credentials used for reading data." }},
+      "report":{
+        "account":{"field":{ "name":"account", "kind":"integer", "order":2, "default":"", "description":"CM network id." }},
+        "report_id":{"field":{ "name":"report_id", "kind":"integer", "order":3, "default":"", "description":"CM report id, empty if using name ." }},
+        "name":{"field":{ "name":"report_name", "kind":"string", "order":4, "default":"", "description":"CM report name, empty if using id instead." }}
+      },
+      "out":{
+        "bigquery":{
+          "auth":{"field":{ "name":"auth_write", "kind":"authentication", "order":1, "default":"service", "description":"Credentials used for writing data." }},
+          "dataset":{"field":{ "name":"dataset", "kind":"string", "order":5, "default":"", "description":"Dataset to be written to in BigQuery." }},
+          "table":{"field":{ "name":"table", "kind":"string", "order":6, "default":"", "description":"Table to be written to in BigQuery." }},
+          "header":true,
+          "is_incremental_load":{"field":{ "name":"is_incremental_load", "kind":"boolean", "order":7, "default":false, "description":"Clear data in destination table during this report's time period, then append report data to existing table." }}
+        }
+      }
+    }}
+  ]
+}

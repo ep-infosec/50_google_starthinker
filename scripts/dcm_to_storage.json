@@ -1,0 +1,36 @@
+{
+  "script":{
+    "released":"2017-08-14",
+    "license":"Licensed under the Apache License, Version 2.0",
+    "copyright":"Copyright 2020 Google LLC",
+    "icon":"donut_small",
+    "title":"CM360 Report To Storage",
+    "description":"Move existing CM report into a Storage bucket.",
+    "from":["cm360"],
+    "to":["storage"],
+    "instructions":[
+      "Specify an account id.",
+      "Specify either report name or report id to move a report.",
+      "The most recent file will be moved to the bucket.",
+      "Schema is pulled from the official CM specification."
+    ],
+    "authors":["kenjora@google.com"]
+  },
+  "tasks":[
+    { "dcm":{
+      "auth":{"field":{ "name":"auth_read", "kind":"authentication", "order":1, "default":"user", "description":"Credentials used for reading data." }},
+      "report":{
+        "account":{"field":{ "name":"account", "kind":"integer", "order":2, "default":"" }},
+        "report_id":{"field":{ "name":"report_id", "kind":"integer", "order":3, "default":"" }},
+        "name":{"field":{ "name":"report_name", "kind":"string", "order":4, "default":"" }}
+      },
+      "out":{
+        "storage":{
+          "auth":{"field":{ "name":"auth_write", "kind":"authentication", "order":1, "default":"service", "description":"Credentials used for writing data." }},
+          "bucket":{"field":{ "name":"bucket", "kind":"string", "order":5, "default":"" }},
+          "path":{"field":{ "name":"path", "kind":"string", "order":6, "default":"CM_Report" }}
+        }
+      }
+    }}
+  ]
+}

@@ -1,0 +1,106 @@
+{% extends "page.html" %}
+
+{% comment %}
+###########################################################################
+#
+#  Copyright 2020 Google LLC
+#
+#  Licensed under the Apache License, Version 2.0 (the "License");
+#  you may not use this file except in compliance with the License.
+#  You may obtain a copy of the License at
+#
+#      https://www.apache.org/licenses/LICENSE-2.0
+#
+#  Unless required by applicable law or agreed to in writing, software
+#  distributed under the License is distributed on an "AS IS" BASIS,
+#  WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, either express or implied.
+#  See the License for the specific language governing permissions and
+#  limitations under the License.
+#
+###########################################################################
+{% endcomment %}
+
+{% load i18n %}
+{% load website_app %}
+
+{% block css %}
+  #solution_image { margin: 30px auto; width: 80%; max-width: 800px; height: auto; display: block; }
+  div.deploy { width: 80%; max-width: 300px; display: inline-table; margin: 5vh auto; padding: 0px 3%; }
+  #solution_button { margin: 1vh 1vw; }
+{% endblock %}
+
+{% block content %}
+
+  <h1>{% trans "Recipe Download" %}
+    <a href="/recipe/edit/{{ recipe }}/"><i class="material-icons blue-text">arrow_back</i></a>
+  </h1>
+  <p class="flow-text">{% trans "Share your recipe with anyone outside of your organization using Google Cloud..." %}</p>
+
+  <div class="deploy">
+    <h3>{% trans "StarThinker" %}</h3>
+    <h4>{% trans "JSON<br/>Script" %}</h4>
+    <p>
+      <a id="solution_button" class="btn-large blue waves-effect waves-light" href="/recipe/download/json/{{ recipe }}/">
+        {% trans "Download" %} <i class="material-icons right">file_download</i>
+      </a>
+    </p>
+    <p>{% trans 'Then follow <a href="https://github.com/google/starthinker/blob/master/tutorials/deploy_developer.md" target="_blank">developer deploy</a> or <a href="https://github.com/google/starthinker/blob/master/tutorials/deploy_cloudfunction.md" target="_blank">cloud function deploy</a> instructions to execute.' %}</p>
+    <hr/>
+    <p><i class="material-icons">people</i></p>
+    <p><strong>{% trans "developer" %}<br/>{% trans "operations" %}<br/>{% trans "data science" %}</strong></p>
+    <p><i class="material-icons">settings_input_component</i></p>
+    <p>{% trans '<a href="https://github.com/google/starthinker/blob/master/tutorials/cloud_project.md" target="_blank">Google Cloud Project</a>' %}</p>
+  </div>
+
+  <div class="deploy">
+    <h3>{% trans "Colab" %}</h3>
+    <h4>{% trans "Executable Notebook" %}</h4>
+    <p>
+      <a id="solution_button" class="btn-large blue waves-effect waves-light" href="/recipe/download/colab/{{ recipe }}/">
+        {% trans "Download" %} <i class="material-icons right">file_download</i>
+      </a>
+    </p>
+    <p>{% trans 'Then visit <a href="https://colab.research.google.com/" target="_blank">Google Collaboratory</a> and open the downloaded notebook.' %}</p>
+    <hr/>
+    <p><i class="material-icons">people</i></p>
+    <p><strong>{% trans "operations" %}<br/>{% trans "data science" %}<br/>&nbsp;</strong></p>
+    <p><i class="material-icons">settings_input_component</i></p>
+    <p>{% trans '<a href="https://github.com/google/starthinker/blob/master/tutorials/cloud_project.md" target="_blank">Google Cloud Project</a>' %}</p>
+    <p>{% trans '<a href="https://colab.research.google.com/" target="_blank">Google Collaboratory</a>' %}</p>
+  </div>
+
+  <div class="deploy">
+    <h3>{% trans "Python" %}</h3>
+    <h4>{% trans "Command Line Script" %}</h4>
+    <p>
+      <a id="solution_button" class="btn-large blue waves-effect waves-light" href="/recipe/download/python/{{ recipe }}/">
+        {% trans "Download" %} <i class="material-icons right">file_download</i>
+      </a>
+    <p>{% trans 'Then install <a href="https://github.com/google/starthinker/blob/master/tutorials/deploy_package.md" target="_blank">StarThinker Package</a> and import as function or execute.' %}</p>
+    <hr/>
+    <p><i class="material-icons">people</i></p>
+    <p><strong>{% trans "integration" %}<br/>{% trans "developer" %}<br/>&nbsp;</strong></p>
+    <p><i class="material-icons">settings_input_component</i></p>
+    <p>{% trans '<a href="https://github.com/google/starthinker/blob/master/tutorials/cloud_project.md" target="_blank">Google Cloud Project</a>' %}</p>
+  </div>
+
+  <div class="deploy">
+    <h3>{% trans "Composer" %}</h3>
+    <h4>{% trans "Airflow<br/>DAG" %}</h4>
+    <p>
+      <a id="solution_button" class="btn-large blue waves-effect waves-light" href="/recipe/download/airflow/{{ recipe }}/">
+        {% trans "Download" %} <i class="material-icons right">file_download</i>
+      </a>
+    <p>{% trans 'Then follow StarThinker <a href="https://github.com/google/starthinker/blob/master/tutorials/deploy_airflow.md" target="_blank">Airflow Deploy</a> instructions to import DAG or execute.' %}</p>
+    <hr/>
+    <p><i class="material-icons">people</i></p>
+    <p><strong>{% trans "integration" %}<br/>{% trans "developer" %}<br/>&nbsp;</strong></p>
+    <p><i class="material-icons">settings_input_component</i></p>
+    <p>{% trans '<a href="https://github.com/google/starthinker/blob/master/tutorials/cloud_project.md" target="_blank">Google Cloud Project</a>' %}</p>
+    <p>{% trans '<a href="https://cloud.google.com/composer/" target="_blank">Google Cloud Composer</a>' %}</p>
+  </div>
+
+  <h3 id="code-tasks">{% trans "More Documentation On GitHub" %}</h3>
+  <p class="flow-text">{% trans 'See <a href="https://github.com/google/starthinker/blob/master/tutorials/README.md">StarThinker Tutorials</a> for complete documentation.' %}</p>
+
+{% endblock %}

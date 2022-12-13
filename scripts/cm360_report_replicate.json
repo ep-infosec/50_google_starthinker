@@ -1,0 +1,66 @@
+{
+  "script":{
+    "released":"2020-03-03",
+    "license":"Licensed under the Apache License, Version 2.0",
+    "copyright":"Copyright 2020 Google LLC",
+    "icon":"donut_small",
+    "from":["cm360", "sheets"],
+    "to":["bigquery"],
+    "title":"CM360 Report Replicate",
+    "description":"Replicate a report across multiple networks and advertisers.",
+    "documentation":"https://medium.com/starthinker/replicating-cm360-reports-across-multiple-accounts-108c7c7278b3",
+    "test":"https://github.com/google/starthinker/blob/master/tests/cm360_report_replicate.json",
+    "instructions":[
+      "Provide the name or ID of an existing report.",
+      "Run the recipe once to generate the input sheet called {recipe_name}.",
+      "Enter network and advertiser ids to replicate the report.",
+      "Data will be written to BigQuery &gt; {recipe_project} &gt; {recipe_slug} &gt; {recipe_slug}_All"
+    ],
+    "es":{
+      "title":"CM360 Informe Replicado",
+      "description":"Replica un informe en varias redes y anunciantes.",
+      "instructions":[
+        "Proporcione el nombre o la identificación de un informe existente.",
+        "Ejecute la receta una vez para generar la hoja de entrada llamada {recipe_name}.",
+        "Ingrese los ID de red y de anunciante para replicar el informe.",
+        "Los datos se escribirán en BigQuery &gt; {recipe_project} &gt; {recipe_slug} &gt; {recipe_slug}_All"
+      ]
+    },
+    "authors":["kenjora@google.com"]
+  },
+  "tasks":[
+    { "drive": {
+      "auth": "user",
+      "copy":{
+        "source":"https://docs.google.com/spreadsheets/d/1Su3t2YUWV_GG9RD63Wa3GNANmQZswTHstFY6aDPm6qE/",
+        "destination":{"field":{ "name":"recipe_name", "kind":"string", "order":1, "description":"Name of document to deploy to.", "default":"" }}
+      }
+    }},
+    { "dataset":{
+      "auth":{"field":{ "name":"auth_write", "kind":"authentication", "order":1, "default":"service", "description":"Credentials used for writing data." }},
+      "dataset":{"field":{ "name":"recipe_slug", "kind":"string", "order":2, "default":"", "description":"Name of Google BigQuery dataset to create." }}
+    }},
+    { "cm_report_replicate":{
+      "auth":{"field":{ "name":"auth_read", "kind":"authentication", "order":0, "default":"user", "description":"Credentials used for reading data." }},
+      "report":{
+        "account":{"field":{ "name":"account", "kind":"integer", "order":3, "default":"", "description":"CM network id." }},
+        "id":{"field":{ "name":"report_id", "kind":"integer", "order":4, "default":"", "description":"CM template report id, for template" }},
+        "name":{"field":{ "name":"report_name", "kind":"string", "order":5, "default":"", "description":"CM template report name, empty if using id instead." }},
+        "delete":{"field":{ "name":"delete", "kind":"boolean", "order":6, "default":false, "description":"Use only to reset the reports if setup changes." }}
+      },
+      "replicate":{
+        "sheets":{
+          "sheet":{"field":{ "name":"recipe_name", "kind":"string", "order":1, "default":"", "description":"Sheet to read ids from." }},
+          "tab":"Accounts",
+          "range":""
+        }
+      },
+      "write":{
+        "bigquery":{
+          "dataset":{"field":{ "name":"recipe_slug", "kind":"string", "order":4, "default":"" }},
+          "is_incremental_load":{"field":{ "name":"Aggregate", "kind":"boolean", "order":7, "default":false, "description":"Append report data to existing table, requires Date column." }}
+        }
+      }
+    }}
+  ]
+}

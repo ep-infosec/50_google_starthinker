@@ -1,0 +1,51 @@
+{% comment %}
+###########################################################################
+#
+#  Copyright 2020 Google LLC
+#
+#  Licensed under the Apache License, Version 2.0 (the "License");
+#  you may not use this file except in compliance with the License.
+#  You may obtain a copy of the License at
+#
+#      https://www.apache.org/licenses/LICENSE-2.0
+#
+#  Unless required by applicable law or agreed to in writing, software
+#  distributed under the License is distributed on an "AS IS" BASIS,
+#  WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, either express or implied.
+#  See the License for the specific language governing permissions and
+#  limitations under the License.
+#
+###########################################################################
+{% endcomment %}
+
+{% load website_app %}
+
+{% for field in fields %}
+  {% if field.is_hidden %}
+    {{ field }}
+  {% elif field|is_switch %}
+    <div class="switch">
+      <label for="{{ field.id_for_label }}" class="switch_widget">
+        {{ field.field.value_false }}
+        {{ field }}
+        <span class="lever"></span>
+        <span class="teal-text text-lighten-2">{{ field.field.value_true }}</span>
+      </label>
+      <label><strong>{{ field.label }}</strong>{% if field.help_text %} - {{ field.help_text|safe }}{% endif %}</label>
+    </div>
+  {% elif field|is_checkbox %}
+    <div>
+      <label for="{{ field.id_for_label }}">
+        {{ field }}
+        <span>{{ field.label }}</span>{% if field.help_text %} - {{ field.help_text|safe }}{% endif %}
+      </label>
+    </div>
+  {% else %}
+    <div>
+      <div class="input-field">
+        {{ field }}
+        <label for="{{ field.id_for_label }}"><strong>{{ field.label }}</strong>{% if field.help_text %} - {{ field.help_text|safe }}{% endif %}</label>
+      </div>
+    </div>
+  {% endif %}
+{% endfor %}

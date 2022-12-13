@@ -1,0 +1,26 @@
+{
+  "script":{
+    "released":"2017-12-07",
+    "license":"Licensed under the Apache License, Version 2.0",
+    "copyright":"Copyright 2020 Google LLC",
+    "icon":"view_column",
+    "title":"Sheet Clear",
+    "description":"Clear data from a sheet.",
+    "test":"https://github.com/google/starthinker/blob/master/tests/sheets.json",
+    "from":["sheets"],
+    "to":["sheets"],
+    "instructions":[
+      "For the sheet, provide the full edit URL."
+    ],
+    "authors":["mauriciod@google.com"]
+  },
+  "tasks":[
+    { "sheets":{
+      "auth":{"field":{ "name":"auth_read", "kind":"authentication", "order":1, "default":"user", "description":"Credentials used for reading data." }},
+      "sheet":{"field":{ "name":"sheets_sheet", "kind":"string", "order":1, "default":"" }},
+      "tab":{"field":{ "name":"sheets_tab", "kind":"string", "order":2, "default":"" }},
+      "range":{"field":{ "name":"sheets_range", "kind":"string", "order":3, "default":"" }},
+      "clear":true
+    }}
+  ]
+}

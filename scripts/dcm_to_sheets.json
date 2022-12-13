@@ -1,0 +1,37 @@
+{
+  "script":{
+    "released":"2018-01-29",
+    "license":"Licensed under the Apache License, Version 2.0",
+    "copyright":"Copyright 2020 Google LLC",
+    "icon":"donut_small",
+    "from":["cm360"],
+    "to":["sheets"],
+    "title":"CM360 Report To Sheets",
+    "description":"Move existing CM report into a Sheet tab.",
+    "test":"https://github.com/google/starthinker/blob/master/tests/dcm_to_sheets.json",
+    "instructions":[
+      "Specify an account id.",
+      "Specify either report name or report id to move a report.",
+      "The most recent valid file will be moved to the sheet.",
+      "Schema is pulled from the official CM specification."
+    ],
+    "authors":["kenjora@google.com"]
+  },
+  "tasks":[
+    { "dcm":{
+      "auth":{"field":{ "name":"auth_read", "kind":"authentication", "order":1, "default":"user", "description":"Credentials used for reading data." }},
+      "report":{
+        "account":{"field":{ "name":"account", "kind":"integer", "order":2, "default":"" }},
+        "report_id":{"field":{ "name":"report_id", "kind":"integer", "order":3, "default":"" }},
+        "name":{"field":{ "name":"report_name", "kind":"string", "order":4, "default":"" }}
+      },
+      "out":{
+       "sheets":{
+          "sheet":{"field":{ "name":"sheet", "kind":"string", "order":5, "default":"" }},
+          "tab":{"field":{ "name":"tab", "kind":"string", "order":6, "default":"" }},
+          "range":"A1"
+        }
+      }
+    }}
+  ]
+}
